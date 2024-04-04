@@ -71,9 +71,7 @@ def do_deploy(archive_path):
         # Crée  nouveau lien symbolique vers  répertoire de déploiement
         run("ln -s {} /data/web_static/current".format(rmtp))
         return True
-    except Exception as e:
-        # Affiche l'erreur pour  débogage
-        print("Exception occurred:", str(e))
+    except:
         return False
 
 
