@@ -1,78 +1,87 @@
 #!/usr/bin/python3
 """
-Fabric script for creating
-distributing an archive to web servers.
+Fabric (based on the file 2-do_deplo0y_web_static.py)
+that creates and distributes
+an archive to your web servers
 
-Author: Said LAMGHARI
+Autor : Said LAMGHARI
 """
-
-from datetime import datetime
-import os
 from fabric.api import env, local, put, run
+import os
+from datetime import datetime
 
 # Définit les hôtes et l'utilisateur pour Fabric
 env.hosts = ['54.242.107.147', '54.236.27.110']
+# Mettez à jour avec votre nom d'utilisateur
 env.user = 'ubuntu'
-# Spécifiez le chemin vers votre clé privée SSH
+# Mettez à jour avec le chemin de votre clé privée SSH
 env.key_filename = '~/.ssh/id_rsa'
 
 
 def do_pack():
     """Creates a compressed archive
-    of the web_static directory."""
+    ofthe web_static"""
     # Génère un horodatage pour le nom de l'archive
-    tmstp = datetime.utcnow().strftime("%Y%m%d%H%M%S")
-    archn = "versions/web_static_{}.tgz".format(tmstp)
+    # Obtient le temps actuel
+    timstmp = datetime.now().strftime("%Y%m%d%H%M%S")
+    # Construit le nom de l'archive avec un horodatage
+    archvn = "versions/web_static_{}.tgz".format(timstmp)
 
     # Crée le répertoire 'versions' s'il n'existe pas déjà
-    if not os.path.exists("versions"):
-        os.makedirs("versions")
+    local("mkdir -p versions")
 
     # Crée l'archive en utilisant tar
-    rlt = local("tar -czvf {} web_static".format(archn))
-    if rlt.failed:
+    rslt = local("tar -czvf {} web_static".format(archvn))
+
+    # Vérifie si la création de l'archive a réussi
+    if rslt.failed:
         return None
     else:
-        return archn
+        return archvn
 
 
 def do_deploy(archive_path):
-    """Deploys the archive
-    to the web servers."""
+    """Archive to the web servers"""
+    # Vérifie si le chemin de l'archive existe
     if not os.path.exists(archive_path):
         return False
 
-    archn = os.path.basename(archive_path)
-    fldn = archn.split('.')[0]
-    remote_path = "/data/web_static/releases/{}/".format(fldn)
+    # Obtient le nom de l'archive et le nom du dossier
+    archvnm = os.path.basename(archive_path)
+    # Obtient le nom du dossier de l'archive (en enlevant l'extension)
+    archvfd = archvnm.split('.')[0]
+    # Chemin distant pour l'archive
+    rmtp = "/data/web_static/releases/{}/".format(archvfd)
 
-    # Transfère l'archive sur le serveur distant
-    if put(archive_path, "/tmp/{}".format(archn)).failed:
+    try:
+        # Télécharge l'archive sur e serveur distant
+        put(archive_path, "/tmp/")
+        # Crée le répertoire  déploiement sur le serveur
+        run("mkdir -p {}".format(rmtp))
+        # Extrait l'archive dans le répertoire de déploiement
+        run("tar -xzf /tmp/{} -C {}".format(archvnm, rmtp))
+        # Supprime l'archive temporaire ur le serveur
+        run("rm /tmp/{}".format(archvnm))
+        # Déplace les fichiers de l'archive vers répertoire de déploiement
+        run("mv {}web_static/* {}".format(rmtp, rmtp))
+        # Supprime répertoire 'web_static' redondant
+        run("rm -rf {}web_static".format(rmtp))
+        # Supprime  lien symbolique 'current' existant
+        run("rm -rf /data/web_static/current")
+        # Crée  nouveau lien symbolique vers  répertoire de déploiement
+        run("ln -s {} /data/web_static/current".format(rmtp))
+        return True
+    except:
         return False
-
-    # Déploie l'archive sur le serveur
-    cmnds = [
-        "mkdir -p {}".format(remote_path),
-        "tar -xzf /tmp/{} -C {}".format(archn, remote_path),
-        "rm /tmp/{}".format(archn),
-        "mv {}web_static/* {}".format(remote_path, remote_path),
-        "rm -rf {}web_static".format(remote_path),
-        "rm -rf /data/web_static/current",
-        "ln -s {} /data/web_static/current".format(remote_path)
-    ]
-
-    # Exécute les commandes sur chaque serveur
-    for cmnd in cmnds:
-        if run(cmnd).failed:
-            return False
-
-    return True
 
 
 def deploy():
-    """Creates and deploys an
-    archive to the web servers."""
-    archive_path = do_pack()
-    if archive_path is None:
+    """Creates an archive to the web servers
+    distributes an archive to the web servers"""
+    # Crée l'archive
+    achp = do_pack()
+    # Vérifie si la création darchive a réussi
+    if achp is None:
         return False
-    return do_deploy(archive_path)
+    # Déploie l'archive sur serveurs
+    return do_deploy(achp)
