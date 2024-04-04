@@ -17,8 +17,8 @@ def do_pack():
     timenow = datetime.now()
 
     # Construit le nom de l'archive avec un horodatage
-    archvnm = "versions/web_static_{}.tgz"
-    .format(timenow.strftime("%Y%m%d%H%M%S"))
+    archvnm = "versions/web_static_{}.tgz".format(
+            timenow.strftime("%Y%m%d%H%M%S"))
 
     # Crée le répertoire 'versions' s'il n'existe pas déjà
     local("mkdir -p versions")
