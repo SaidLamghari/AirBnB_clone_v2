@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 Fabric (based on the file 2-do_deplo0y_web_static.py)
 that creates and distributes
