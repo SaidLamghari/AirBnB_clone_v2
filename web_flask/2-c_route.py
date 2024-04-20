@@ -12,7 +12,7 @@ Routes:
     The option strict_slashes=False is used in route definition
 Autor: Said LAMGHARI
     """
-from flask import Flask, escape
+from flask import Flask
 
 app = Flask(__name__)
 
@@ -34,7 +34,7 @@ def dsply_c(text):
     """Dsplays 'C '
     followd by the value
     of the text variable"""
-    string = escape(text).replace('_', ' ')
+    string = text.replace('_', ' ')
     return 'C {}'.format(string)
 
 
