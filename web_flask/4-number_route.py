@@ -5,8 +5,10 @@ he web application that must be listening on 0.0.0.0, port 5000
 Routes:
     /: display “Hello HBNB!”
     /hbnb: display “HBNB”
-    /c/<text>: display “C ”, it will followed by the value of the text
-    /python/(<text>): display “Python ”,it will followed by the value of the text variable
+    /c/<text>: display “C ”,
+    it will followed by the value of the text
+    /python/(<text>): display “Python ”
+    it will followed by the value of the text variable
     The default text is “is cool”
     /number/<n>: display “n is a number” only if n is an integer
 Autor: Said LAMGHARI
