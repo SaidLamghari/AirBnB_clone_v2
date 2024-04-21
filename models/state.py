@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-import os
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
+import os
 import models
+from models.city import City
+from models import storage
 
 class State(BaseModel, Base):
     """ State class """
@@ -12,27 +14,26 @@ class State(BaseModel, Base):
 
     name = Column(String(128), nullable=False)
 
-    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        cities = relationship('City', cascade='all, delete', backref='state')
-    else:
+    if os.getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
         def cities(self):
             '''
+            modification
             Returns a list of City instances with
             state_id = State.id.
             '''
+        city_instances = []
+        for city in storage.all(City).values():
+                if city.state_id == self.id:
+                        city_instances.append(city)
+                        return city_instances
+            
 
-            c_dict = models.storage.all(City)
-            return [city for city in c_dict.values()
-                    if city.state_id == self.id]
-
-    # Public getter method for cities if storage is not DBStorage
-    if os.getenv('HBNB_TYPE_STORAGE') != 'db':
-        def cities(self):
-            """
-            Getter method for cities attribute.
-            Returns the list of City objects linked to the current State.
-            """
-
-            c_dict = models.storage.all(models.City)
-            return [city for city in c_dict.values() if city.state_id == self.id]
+    def __init__(self, *args, **kwargs):
+        """ Initializes
+        modification
+        a new State instance """
+        super().__init__(*args, **kwargs)
+        self.name = kwargs.get('name', '')
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            self.cities = relationship('City', cascade='all, delete', backref='state')
