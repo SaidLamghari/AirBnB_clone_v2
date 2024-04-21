@@ -21,13 +21,14 @@ class State(BaseModel, Base):
             modification
             Returns a list of City instances with
             state_id = State.id.
+            AuTOR: Said LAMGHARI
             '''
             from models import storage
-            city_instances = []
+            cty_instncs = []
             for city in storage.all(City).values():
                 if city.state_id == self.id:
-                    city_instances.append(city)
-            return city_instances
+                    cty_instncs.append(city)
+            return cty_instncs
 
     def __init__(self, *args, **kwargs):
         """ Initializes
@@ -36,4 +37,8 @@ class State(BaseModel, Base):
         super().__init__(*args, **kwargs)
         self.name = kwargs.get('name', '')
         if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            self.cities = relationship('City', cascade='all, delete', backref='state')
+            self.cities = relationship(
+                    'City',
+                    cascade='all, delete',
+                    backref='state'
+                    )

@@ -11,6 +11,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from models.user import User
 from models.amenity import Amenity
 
+
 class DBStorage:
     '''
     This class handles the db engine
