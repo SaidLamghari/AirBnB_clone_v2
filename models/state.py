@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 import os
 import models
 from models.city import City
-from models import storage
+
 
 class State(BaseModel, Base):
     """ State class """
@@ -22,12 +22,12 @@ class State(BaseModel, Base):
             Returns a list of City instances with
             state_id = State.id.
             '''
+            from models import storage
             city_instances = []
             for city in storage.all(City).values():
                 if city.state_id == self.id:
                     city_instances.append(city)
             return city_instances
-            
 
     def __init__(self, *args, **kwargs):
         """ Initializes
