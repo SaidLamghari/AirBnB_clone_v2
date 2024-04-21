@@ -28,9 +28,8 @@ def dsply_stateslist():
     """
     Dsplay State objects
     """
-    v_stts = storage.all(State).values()
-    srtd_stts = sorted(v_stts, key=lambda x: x.name)
-    return render_template('7-states_list.html', states=srtd_stts)
+    states = sorted(list(storage.all("State").values()), key=lambda x: x.name)
+    return render_template('7-states_list.html', states=states
 
 
 @app.teardown_appcontext
