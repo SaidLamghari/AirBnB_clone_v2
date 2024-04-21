@@ -22,11 +22,11 @@ class State(BaseModel, Base):
             Returns a list of City instances with
             state_id = State.id.
             '''
-        city_instances = []
-        for city in storage.all(City).values():
+            city_instances = []
+            for city in storage.all(City).values():
                 if city.state_id == self.id:
-                        city_instances.append(city)
-                        return city_instances
+                    city_instances.append(city)
+            return city_instances
             
 
     def __init__(self, *args, **kwargs):
