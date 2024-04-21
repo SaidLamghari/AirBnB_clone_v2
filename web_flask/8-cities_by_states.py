@@ -17,7 +17,8 @@ app = Flask(__name__)
 
 @app.teardown_appcontext
 def rm_teardown_db(exception):
-    """ Remove the current SQLAlchemy Session """
+    """ Remove the currt
+    SQLAlchemy Session """
     storage.close()
 
 
