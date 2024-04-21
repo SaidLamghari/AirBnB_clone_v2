@@ -18,6 +18,7 @@ Autor : SAID LAMGHARI
 from flask import Flask, render_template
 from models import storage
 from models.state import State
+from models import *
 
 
 app = Flask(__name__)
@@ -31,7 +32,7 @@ def dsply_stateslist():
     """
     v_stts = storage.all(State).values()
     srtd_stts = sorted(v_stts, key=lambda x: x.name)
-    return render_template('7-states_list.html', v_stts=srtd_stts)
+    return render_template('7-states_list.html', states=srtd_stts)
 
 @app.teardown_appcontext
 def rmv_teardowndb(exception):
