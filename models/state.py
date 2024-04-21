@@ -31,3 +31,13 @@ class State(BaseModel, Base):
                 c_dict = models.storage.all(City)
                 return [city for city in c_dict.values()
                         if city.state_id == self.id]
+
+    def cities(self):
+    """
+    Method to return the list
+    City objects linked to the current State
+    """
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        return [city for city in self.cities]
+    else:
+        return [city for city in models.storage.all(City).values() if city.state_id == self.id]
