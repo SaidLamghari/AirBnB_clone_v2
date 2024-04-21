@@ -24,12 +24,3 @@ class State(BaseModel, Base):
 
             c_dict = models.storage.all(City)
             return [city for city in c_dict.values() if city.state_id == self.id]
-
-    def __init__(self, *args, **kwargs):
-        """ Initializes
-        modification
-        a new State instance """
-        super().__init__(*args, **kwargs)
-        self.name = kwargs.get('name', '')
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            self.cities = relationship('City', cascade='all, delete', backref='state')
