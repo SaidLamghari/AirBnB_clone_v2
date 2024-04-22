@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBNB Filters</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/3-footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/3-header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/4-common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/6-filters.css') }}">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" height="30" alt="logo">
+            </a>
+        </nav>
+    </header>
+    <div class="container">
+        <section class="filters">
+            <h2>Filters</h2>
+            <div class="locations">
+                <h3>States</h3>
+                <div class="popover">
+                    <button class="btn btn-primary" type="button" data-toggle="popover" title="States" data-content="Placeholder for states">&nbsp;</button>
+                </div>
+            </div>
+            <div class="locations">
+                <h3>Cities</h3>
+                <div class="popover">
+                    <button class="btn btn-primary" type="button" data-toggle="popover" title="Cities" data-content="Placeholder for cities">&nbsp;</button>
+                </div>
+            </div>
+            <div class="amenities">
+                <h3>Amenities</h3>
+                <div class="popover">
+                    <button class="btn btn-primary" type="button" data-toggle="popover" title="Amenities" data-content="Placeholder for amenities">&nbsp;</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <div class="container">
+            <p>Footer</p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover({trigger: 'hover', placement: 'bottom'});
+        });
+    </script>
+</body>
+</html>
+
